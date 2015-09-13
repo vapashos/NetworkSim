@@ -7,13 +7,14 @@
 
 #ifndef SERVER_H_
 #define SERVER_H_
-#include "packet.h"
+#include "segment.h"
 #include "generalFunctions.h"
 #include "channel.h"
 class server {
 public:
-	deque<packet> packetsToDownload;
+	deque<packet> packetsToDownload;//list of packets that users have to download
 	deque<channel> channels3G;
+	deque<segment> segmentList;
 	int numberOf3GChannels;
 	server();
 	void createPacketList();
@@ -21,6 +22,7 @@ public:
 	void initChannels(int channelsNumber,float maxlossProb,float minlossProb);//Initialise parameters of channels for 3G
 	void allocatePacketsOnChannels();//this function allocate packets among channels - users in round robin
 	void showChannelQueues();
+	void showSegmentList();
 	virtual ~server();
 };
 
