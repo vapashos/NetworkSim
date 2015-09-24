@@ -25,7 +25,7 @@ public:
 	bool download3GPacket();//if there is nothing else to download return true
 	void showNeighborList();//show neighbors
 	void showQueue(const deque<packet> &queue);//show any type of packet queue
-
+	void readyToBroadcast();//Each timeslot we run this check to know if one node is ready for broadcast after downloading all the packets of segment
 	//constructors-destructor
 	node();
 	virtual ~node();

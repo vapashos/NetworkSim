@@ -16,6 +16,7 @@ public:
 	static int counter;
 	int id,senderID,receiverID;
 	int segmentID;
+	bool isLast;//flag that shows us tha this is the last packet of the segment
 	deque<unsigned char> payload;
 	void showPayload();
 	void setSegmentID(int sID);
@@ -23,7 +24,6 @@ public:
 	packet(int sID,int rID);
 	packet(int sID,int rID,deque<unsigned char> &pLoad);
 	packet(const packet &p);
-
 	virtual ~packet();
 };
 

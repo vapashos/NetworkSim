@@ -29,7 +29,7 @@ int main() {
 	s.createPacketList();
 	s.showPacketList();
 	s.showSegmentList();
-/*	s.initChannels(numOfNodes,0.6,0.2);
+	s.initChannels(numOfNodes,0.6,0.2);
 	//Create neighbors of the nodes
 	for(unsigned int i=0;i<nodeList.size();i++){
 			for(unsigned int j=0;j<nodeList.size();j++){
@@ -55,9 +55,11 @@ int main() {
 				}
 			}
 			nodeList[j]->ch3G->showChannel();
+			//after each node downloads each packet it checks if it has downloaded a segment so it can start the broadcast
+
 		}
 
-	}*/
+	}
 
 
 

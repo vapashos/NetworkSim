@@ -32,7 +32,7 @@ packet::packet(int sID,int rID,deque<unsigned char> &pLoad){
 	senderID=sID;
 	receiverID=rID;
 	payload=pLoad;
-	cout<<"Empty packet with ID"<<id<<" created sender"<<senderID<<"receiver:"<<receiverID<<endl;
+	//cout<<"Empty packet with ID"<<id<<" created sender"<<senderID<<"receiver:"<<receiverID<<endl;
 }
 
 packet::packet(const packet &p) {
@@ -42,12 +42,13 @@ packet::packet(const packet &p) {
 	receiverID=p.receiverID;
 	payload=p.payload;
 	segmentID=p.segmentID;
+	isLast=p.isLast;
 	//cout<<"copy constructor for packet with id "<<id<<endl;
 }
 
 packet::~packet() {
 	// TODO Auto-generated destructor stub
-	payload.clear();
+//	payload.clear();
 }
 
 void packet::showPayload(){

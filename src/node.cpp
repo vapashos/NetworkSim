@@ -69,8 +69,13 @@ bool node::download3GPacket(){
 	//Add packet on in3GQueue and remove it then from channel3G
 	in3GQueue.push_back(ch3G->packetQueue.front());
 	ch3G->packetQueue.pop_front();
+
 	cout<<"After downloading packet ";
 	showQueue(in3GQueue);
+	//check if the packet downloaded is the last packet of the segment so the user can broadcast
+	if(in3GQueue.back().isLast){
+		cout<<"node "<<id<<" can start the BROADCAST "<<endl;
+	}
 	return false;
 }
 
