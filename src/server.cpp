@@ -12,6 +12,13 @@ server::server() {
 
 }
 
+server::server(const server &x){
+	packetsToDownload=x.packetsToDownload;
+	channels3G=x.channels3G;
+	segmentList=x.segmentList;
+	numberOf3GChannels=x.numberOf3GChannels;
+}
+
 server::~server() {
 	// TODO Auto-generated destructor stub
 }

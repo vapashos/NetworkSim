@@ -17,6 +17,7 @@ public:
 	deque<segment> segmentList;
 	int numberOf3GChannels;
 	server();
+	server(const server &x);
 	void createPacketList();//creates packets for trasmition and assigns packets to segments
 	void showPacketList();//Show packet list with data that users are going to download
 	void initChannels(int channelsNumber,float maxlossProb,float minlossProb);//Initialise parameters of channels for 3G

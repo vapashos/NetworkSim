@@ -7,9 +7,7 @@
 //============================================================================
 
 
-#include "node.h"
-#include "message.h"
-#include "server.h"
+#include "simulator.h"
 
 
 
@@ -20,18 +18,25 @@ int main() {
 	//node();
 	//create set of 5 nodes
 	int numOfNodes=5;
-	deque<node*> nodeList;
-	for(int i=0;i<numOfNodes;i++){
-		nodeList.push_back(new node());
-	}
 
-	server s;
-	s.createPacketList();
-	s.showPacketList();
-	s.showSegmentList();
-	s.initChannels(numOfNodes,0.6,0.2);
+	server *s=new server();
+	s->createPacketList();
+	s->showPacketList();
+	s->showSegmentList();
+	s->initChannels(numOfNodes,0.6,0.2);
+
+
+	simulator mySim(5,s);
+	s->showPacketList();
+	s->packetsToDownload.pop_front();
+
+	mySim.s->showPacketList();
+//	mySim.createMeshTopology();
+//	mySim.allocatePacketsOnChannels();
+//	mySim.showChannelQueues();
+
 	//Create neighbors of the nodes
-	for(unsigned int i=0;i<nodeList.size();i++){
+	/*for(unsigned int i=0;i<nodeList.size();i++){
 			for(unsigned int j=0;j<nodeList.size();j++){
 				if(i!=j)
 					nodeList[i]->addNeighbor(nodeList[j]);
@@ -59,7 +64,7 @@ int main() {
 
 		}
 
-	}
+	}*/
 
 
 
