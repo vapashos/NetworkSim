@@ -31,9 +31,9 @@ int main() {
 	s->packetsToDownload.pop_front();
 
 	mySim.s->showPacketList();
-//	mySim.createMeshTopology();
-//	mySim.allocatePacketsOnChannels();
-//	mySim.showChannelQueues();
+	mySim.createMeshTopology();
+	mySim.allocatePacketsOnChannels();
+	mySim.showChannelQueues();
 
 	//Create neighbors of the nodes
 	/*for(unsigned int i=0;i<nodeList.size();i++){

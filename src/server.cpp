@@ -84,7 +84,7 @@ void server::allocatePacketsOnChannels(){
 
 void server::showChannelQueues(){
 	for(unsigned int i=0;i<channels3G.size();i++){
-		channels3G[i].showChannel();
+		channels3G[i].showChannel(2);
 	}
 }
 

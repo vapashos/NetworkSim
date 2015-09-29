@@ -22,7 +22,7 @@ simulator::~simulator() {
 }
 
 void simulator::createMeshTopology(){
-
+cout<<"Inside create mesh Topology"<<endl;
 	for(unsigned int i=0;i<nodeList.size();i++){
 		for(unsigned int j=0;j<nodeList.size();j++){
 			if(i!=j)
@@ -33,6 +33,7 @@ void simulator::createMeshTopology(){
 	}
 }
 void simulator::allocatePacketsOnChannels(){
+	cout<<"allocate Packets on Channels"<<endl;
 	s->allocatePacketsOnChannels();
 }
 void simulator::showChannelQueues(){

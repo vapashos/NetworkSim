@@ -19,7 +19,7 @@ public:
 	channel(float prob);
 	void addPacket(const packet &p);
 	void removePacket();
-	void showChannel();
+	void showChannel(int segmentSize);
 	virtual ~channel();
 
 };
