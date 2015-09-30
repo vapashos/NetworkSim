@@ -14,6 +14,7 @@ node::node() {
 	id=counter;
 	ch3G=NULL;
 	cout<<"Node "<<id<<" created"<<endl;
+	readyToBroadcast=false;
 }
 
 node::~node() {
@@ -73,8 +74,10 @@ bool node::download3GPacket(){
 	cout<<"After downloading packet ";
 	showQueue(in3GQueue);
 	//check if the packet downloaded is the last packet of the segment so the user can broadcast
+	readyToBroadcast=false;
 	if(in3GQueue.back().isLast){
 		cout<<"node "<<id<<" can start the BROADCAST "<<endl;
+		readyToBroadcast=true;
 	}
 	return false;
 }

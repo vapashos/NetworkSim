@@ -79,12 +79,13 @@ void server::allocatePacketsOnChannels(){
 		}
 		cout<<endl;
 	}
+	showChannelQueues();
 }
 
 
 void server::showChannelQueues(){
 	for(unsigned int i=0;i<channels3G.size();i++){
-		channels3G[i].showChannel(2);
+		channels3G[i].showChannel();
 	}
 }
 

@@ -15,6 +15,7 @@ simulator::simulator(int nodesNum,server *srv){
 		nodeList.push_back(new node());
 	}
 	s=srv;
+	broadcastNode=NULL;
 }
 
 simulator::~simulator() {
@@ -38,4 +39,16 @@ void simulator::allocatePacketsOnChannels(){
 }
 void simulator::showChannelQueues(){
 	s->showChannelQueues();
+}
+
+void simulator::checkForBroadcastNodes(){
+	cout<<"candidates for Broadcast nodes:";
+	for(unsigned int i=0;i<nodeList.size();i++){
+		if(nodeList[i]->readyToBroadcast){
+			//Node is candidate for broadcast
+			broadcastCandidates.push_back(nodeList[i]);
+			cout<<"n"<<nodeList[i]->id<<" ";
+		}
+	}
+	cout<<endl;
 }

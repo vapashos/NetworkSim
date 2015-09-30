@@ -33,7 +33,7 @@ void channel::addPacket(const packet &p){
 	packetQueue.push_back(p);
 }
 
-void channel::showChannel(int segmentSize){
+void channel::showChannel(){
 	if(packetQueue.empty()){
 		cout<<"packet Queue is empty"<<endl;
 		return;
@@ -43,8 +43,11 @@ void channel::showChannel(int segmentSize){
 		cout<<"========";
 	}
 	cout<<endl;
+	int tempSegmentID=packetQueue[0].segmentID;
+	cout<<"seg("<<packetQueue[0].segmentID<<"){";
 	for(unsigned int i=0;i<packetQueue.size();i++){
-		if(i%segmentSize==0){
+		if(tempSegmentID!=packetQueue[i].segmentID){
+			tempSegmentID=packetQueue[i].segmentID;
 			if(i!=0)
 				cout<<"}";
 			cout<<"seg("<<packetQueue[i].segmentID<<"){ ";

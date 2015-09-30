@@ -17,12 +17,22 @@ public:
 	deque<node*> nodeList;
 	int numOfNodes;
 	server *s;
+	node* broadcastNode;//points anytime on broadcastingNode
+	deque<node*> broadcastCandidates;//nodes that are candidates to broadcast
 	simulator(int nodesNum,server *srv);
 	void createMeshTopology();
 	void allocatePacketsOnChannels();
 	void showChannelQueues();
+	void checkForBroadcastNodes();
 
 	virtual ~simulator();
 };
 
 #endif /* SIMULATOR_H_ */
+
+//Notes
+//########### 1.function checkForBroadcastNodes ####################
+//each time simulator runs a function that scans the node list to check if a node
+//has readyToBroadcast flag true.which means that the node is ready to broadcast
+//if there is a node ready for broadcast simulator will add him on broadcastCandidates queue
+//after this simulator shall select a broadcastNode from the candidates.
