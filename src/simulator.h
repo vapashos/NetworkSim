@@ -15,13 +15,18 @@
 class simulator {
 public:
 	deque<node*> nodeList;
+	deque<node*> broadcastList;//list of nodes ready to broadcast
+	node* broadcastNode;
 	int numOfNodes;
 	server *s;
 	simulator(int nodesNum,server *srv);
 	void createMeshTopology();
 	void allocatePacketsOnChannels();
 	void showChannelQueues();
-
+	void checkNodesBroadcast();//iterates over nodelist to check if someone can broadcast checking {readyToBroadcast} variable
+	void initReadyToBroadcastFlag();
+	void showBroadcastList();
+	void setBroadcastNode();//Decide which node among the candidates will be the broadcast node this check is done every second
 	virtual ~simulator();
 };
 

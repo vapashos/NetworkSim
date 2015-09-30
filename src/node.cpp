@@ -63,6 +63,7 @@ bool node::download3GPacket(){
 	//Check if the channel is empty first
 	if(ch3G->packetQueue.empty()){
 		cout<<"channel3G is empty"<<endl;
+		readyToBroadcast=false;
 		return true;
 	}
 
@@ -75,6 +76,7 @@ bool node::download3GPacket(){
 	//check if the packet downloaded is the last packet of the segment so the user can broadcast
 	if(in3GQueue.back().isLast){
 		cout<<"node "<<id<<" can start the BROADCAST "<<endl;
+		readyToBroadcast=true;
 	}
 	return false;
 }
@@ -106,5 +108,6 @@ void node::showQueue(const deque<packet> &queue){
 	cout<<"-";
 
 }
+
 
 

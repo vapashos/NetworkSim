@@ -35,23 +35,29 @@ void channel::addPacket(const packet &p){
 
 void channel::showChannel(){
 	if(packetQueue.empty()){
-		cout<<"packet Queue is empty"<<endl;
-		return;
-	}
-	cout<<"*** ch"<<id<<" ***"<<endl;
-	for(unsigned int i=0;i<packetQueue.size();i++){
-		cout<<"===";
-	}
-	cout<<endl;
-	for(unsigned int i=0;i<packetQueue.size();i++){
+			cout<<"packet Queue is empty"<<endl;
+			return;
+		}
+		cout<<"*** ch"<<id<<" ***"<<endl;
+		for(unsigned int i=0;i<packetQueue.size();i++){
+			cout<<"========";
+		}
+		cout<<endl;
+		int tempSegmentID=packetQueue[0].segmentID;
+		cout<<"seg("<<packetQueue[0].segmentID<<"){";
+		for(unsigned int i=0;i<packetQueue.size();i++){
+			if(tempSegmentID!=packetQueue[i].segmentID){
+				tempSegmentID=packetQueue[i].segmentID;
+				if(i!=0)
+					cout<<"}";
+				cout<<"seg("<<packetQueue[i].segmentID<<"){ ";
+			}
 			cout<<"P"<<packetQueue[i].id<<" ";
-	}
-	cout<<endl;
-	for(unsigned int i=0;i<packetQueue.size();i++){
-		cout<<"===";
-	}
-	cout<<endl<<endl;
-
-
+		}
+		cout<<"}"<<endl;
+		for(unsigned int i=0;i<packetQueue.size();i++){
+			cout<<"========";
+		}
+		cout<<endl<<endl;
 
 }
