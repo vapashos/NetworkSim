@@ -18,12 +18,16 @@ public:
 	int numOfNodes;
 	server *s;
 	node* broadcastNode;//points anytime on broadcastingNode
-	deque<node*> broadcastCandidates;//nodes that are candidates to broadcast
+	deque<node*> broadcastList;//requests of nodes for broadcast
 	simulator(int nodesNum,server *srv);
 	void createMeshTopology();
 	void allocatePacketsOnChannels();
+	void allocateSegmentsOnChannels();
 	void showChannelQueues();
+	void showBroadcastList();
 	void checkForBroadcastNodes();
+	void selectBroadcastNode();
+	void updateDownloadedSegmentInfo(node *nodePtr);
 
 	virtual ~simulator();
 };

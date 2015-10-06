@@ -46,7 +46,7 @@ void server::createPacketList(){
 			segmentList.push_back(segment());
 		}
 		packetsToDownload[i].segmentID=segmentList.back().id;
-		segmentList.back().addPacketOnSegment(&packetsToDownload[i]);
+		segmentList.back().addPacketOnSegment(packetsToDownload[i]);
 	}
 }
 
@@ -73,14 +73,33 @@ void server::allocatePacketsOnChannels(){
 	for(unsigned int i=0;i<segmentList.size();i++){
 		cout<<"seg:"<<segmentList[i].id<<"=";
 		for(unsigned int j=0;j<segmentList[i].packetList.size();j++){
-			cout<<"pID"<<segmentList[i].packetList[j]->id<<" ";
-			packet temp=packet(*segmentList[i].packetList[j]);
+			cout<<"pID"<<segmentList[i].packetList[j].id<<" ";
+			packet temp=packet(segmentList[i].packetList[j]);
 			channels3G[i%channels3G.size()].packetQueue.push_back(temp);
 		}
 		cout<<endl;
 	}
 	showChannelQueues();
 }
+
+void server::allocateSegmentsOnChannels(){
+
+	//for each user we allocate segments not packets in round robin
+	cout<<"inside allocateSegmentsOnChannels segmentList size="<<segmentList.size()<<endl;
+	for(unsigned int i=0;i<segmentList.size();i++){
+//		cout<<"seg:"<<segmentList[i].id<<"=";
+		channels3G[i%channels3G.size()].segQueue.push_back(&segmentList[i]);
+//		cout<<"segment"<<channels3G[i%channels3G.size()].segQueue.back()->id<<" added on channel "<<i%channels3G.size()+1<<endl;
+//		for(unsigned int j=0;j<segmentList[i].packetList.size();j++){
+//			cout<<"pID"<<segmentList[i].packetList[j]->id<<" ";
+//			packet temp=packet(*segmentList[i].packetList[j]);
+//			channels3G[i%channels3G.size()].packetQueue.push_back(temp);
+//		}
+		cout<<endl;
+	}
+	showChannelQueues();
+}
+
 
 
 void server::showChannelQueues(){
@@ -89,14 +108,21 @@ void server::showChannelQueues(){
 	}
 }
 
+void server::showChannelSegQueues(){
+	for(unsigned int i=0;i<channels3G.size();i++){
+		channels3G[i].showChannelSegments();
+	}
+}
+
+
 void server::showSegmentList(){
 
 	for(unsigned int i=0;i<segmentList.size();i++){
 		cout<<"----------------------------------------------"<<endl;
 		cout<<"seg"<<segmentList[i].id<<"size"<<segmentList[i].packetList.size()<<endl;
 		for(unsigned int j=0;j<segmentList[i].packetList.size();j++){
-			cout<<"p"<<segmentList[i].packetList[j]->id<<":"<<segmentList[i].packetList[j]->isLast<<"| ";
-			segmentList[i].packetList[j]->showPayload();
+			cout<<"p"<<segmentList[i].packetList[j].id<<":"<<segmentList[i].packetList[j].isLast<<"| ";
+			segmentList[i].packetList[j].showPayload();
 		}
 		cout<<endl;
 		segmentList[i].showLastPacket();

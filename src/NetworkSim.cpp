@@ -32,13 +32,16 @@ int main() {
 
 	mySim.s->showPacketList();
 	mySim.createMeshTopology();
-	mySim.allocatePacketsOnChannels();
+	//mySim.allocatePacketsOnChannels();
+	mySim.allocateSegmentsOnChannels();
 
 	//Simulate transmissions
 	bool flag=false;//flag to check if there is nothing else to be downloaded from 3G for any node
 	for(int i=0;!flag && i<100 ;i++){//100 timeslots
 			cout<<"---------- this tis timeslot "<<i<<" ---------------------"<<endl;
 			flag=true;
+			mySim.selectBroadcastNode();
+			mySim.showBroadcastList();
 			for(unsigned int j=0;j<mySim.nodeList.size();j++){
 				if(!mySim.nodeList[j]->ch3G->packetQueue.empty()){
 					flag=false;
@@ -47,7 +50,7 @@ int main() {
 						mySim.checkForBroadcastNodes();
 					}
 				}
-				mySim.nodeList[j]->ch3G->showChannel();
+				mySim.nodeList[j]->ch3G->showChannelSegments();
 				//after each node downloads each packet it checks if it has downloaded a segment so it can start the broadcast
 
 			}

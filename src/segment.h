@@ -13,9 +13,9 @@ class segment {
 public:
 	static int counter;
 	int id,size;
-	deque<packet*> packetList;//The list of packets that belong to the segment
+	deque<packet> packetList;//The list of packets that belong to the segment
 	packet* lastPacket;//This pointer always points on the last packet
-	void addPacketOnSegment(packet *p);
+	void addPacketOnSegment(packet p);
 	void showLastPacket();
 	packet* getLastPacket();//function that returns a handler to the last packet of the segment
 	segment();

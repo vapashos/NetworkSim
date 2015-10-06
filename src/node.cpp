@@ -76,9 +76,11 @@ bool node::download3GPacket(){
 	//check if the packet downloaded is the last packet of the segment so the user can broadcast
 	readyToBroadcast=false;
 	if(in3GQueue.back().isLast){
-		cout<<"node "<<id<<" can start the BROADCAST "<<endl;
+		cout<<"node "<<id<<" can start the BROADCAST i've just received segment"<<in3GQueue.back().segmentID<<endl;
 		readyToBroadcast=true;
+		downloadedSegmentIDs.push_back(in3GQueue.back().segmentID);
 	}
+
 	return false;
 }
 
@@ -96,7 +98,6 @@ void node::showNeighborList(){
 	cout<<endl;
 }
 
-
 void node::showQueue(const deque<packet> &queue){
 	cout<<"node"<<id<<" queue:";
 	if(!queue.empty()){
@@ -107,7 +108,10 @@ void node::showQueue(const deque<packet> &queue){
 		return;
 	}
 	cout<<"-";
+}
 
+void node::addSegmentOnDownloadQueue(segment *x){
+	downloadedSegments.push_back(x);
 }
 
 

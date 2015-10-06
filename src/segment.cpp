@@ -38,15 +38,16 @@ segment::~segment() {
 	// TODO Auto-generated destructor stub
 }
 
-void segment::addPacketOnSegment(packet *p){
+void segment::addPacketOnSegment(packet p){
 	packetList.push_back(p);
 	if(lastPacket!=NULL)//there was no packet in the segment
 		lastPacket->isLast=false;
 
-	lastPacket=p;//always point to the last received packet.
+	lastPacket=new packet(p);//always point to the last received packet.
 	lastPacket->isLast=true;
+	cout<<"added"<<lastPacket->id<<endl;
 	size++;
-	//cout<<"segment"<<id<<" add packet"<<packetList.back()->id<<" new size="<<size<<endl;
+
 }
 
 void segment::showLastPacket(){

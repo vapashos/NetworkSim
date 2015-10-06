@@ -8,6 +8,7 @@
 #ifndef NODE_H_
 #define NODE_H_
 #include "channel.h"
+#include "segment.h"
 class node {
 public:
 	static int counter;
@@ -15,6 +16,8 @@ public:
 	channel *ch3G;/*channel to download data from the server*/
 	deque<node*> neighborList;
 	deque<packet> in3GQueue;//Queue with incoming packets of 3G
+	deque<segment*> downloadedSegments;//list of downloaded segments
+	deque<int> downloadedSegmentIDs;//list of downloaded segments ids used to update info on downloadedSegments
 	bool readyToBroadcast;
 	int id;
 	//functions
@@ -26,6 +29,7 @@ public:
 	bool download3GPacket();//if there is nothing else to download return true
 	void showNeighborList();//show neighbors
 	void showQueue(const deque<packet> &queue);//show any type of packet queue
+	void addSegmentOnDownloadQueue(segment *x);
 	//void readyToBroadcast();//Each timeslot we run this check to know if one node is ready for broadcast after downloading all the packets of segment
 	//constructors-destructor
 	node();

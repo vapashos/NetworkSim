@@ -59,7 +59,24 @@ void channel::showChannel(){
 		cout<<"========";
 	}
 	cout<<endl<<endl;
+}
 
 
+void channel::showChannelSegments(){
 
+	if(segQueue.empty()){
+			cout<<"seg Queue is empty"<<endl;
+			return;
+	}
+	cout<<"*** ch"<<id<<" ***"<<endl;
+
+	for(unsigned int i=0;i<segQueue.size();i++){
+		cout<<"seg"<<segQueue[i]->id<<"{";
+		for(unsigned int j=0;j<segQueue[i]->packetList.size();j++){
+			cout<<"p"<<segQueue[i]->packetList[j].id<<" ";
+			//cout<<"p"<<segQueue[i]->packetList[j]->id<<" ";
+		}
+		cout<<"}";
+	}
+	cout<<endl;
 }

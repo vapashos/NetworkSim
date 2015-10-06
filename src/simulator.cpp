@@ -37,6 +37,13 @@ void simulator::allocatePacketsOnChannels(){
 	cout<<"allocate Packets on Channels"<<endl;
 	s->allocatePacketsOnChannels();
 }
+
+//A different approach
+void simulator::allocateSegmentsOnChannels(){
+	cout<<"allocate segments on Packets"<<endl;
+	s->allocateSegmentsOnChannels();
+}
+
 void simulator::showChannelQueues(){
 	s->showChannelQueues();
 }
@@ -46,9 +53,62 @@ void simulator::checkForBroadcastNodes(){
 	for(unsigned int i=0;i<nodeList.size();i++){
 		if(nodeList[i]->readyToBroadcast){
 			//Node is candidate for broadcast
-			broadcastCandidates.push_back(nodeList[i]);
+			nodeList[i]->readyToBroadcast=false;
+			broadcastList.push_back(nodeList[i]);
+			//Set flag that indiacates that user is ready to broadcast to false
 			cout<<"n"<<nodeList[i]->id<<" ";
 		}
 	}
 	cout<<endl;
+}
+
+
+void simulator::selectBroadcastNode(){
+
+	if(broadcastNode!=NULL){
+			cout<<"there exists broadcast node"<<endl;
+			return;
+		}
+
+		if (broadcastList.empty())
+			return;
+		else if(broadcastList.size()==1){
+				broadcastNode=broadcastList.front();
+				broadcastList.pop_front();
+				cout<<"broadcast node among 1 candidate was set to "<<broadcastNode->id<<endl;
+				return;
+		}
+		else {
+			cout<<"there are more than one candidates for broadcasting from 0 to "<<broadcastList.size()-1;
+			int x=getRandomNumber(0,broadcastList.size()-1);
+			cout<<" select randomly "<<x<<endl;
+			broadcastNode=broadcastList[x];
+			cout<<"before removing node"<<endl;
+			showBroadcastList();
+			//Remove the respective node from broadcast candidate list;
+			broadcastList.erase(broadcastList.begin()+x);
+			cout<<"after erasing "<<endl;
+			showBroadcastList();
+		}
+}
+
+void simulator::showBroadcastList(){
+	cout<<"Broadcast list:";
+	if(broadcastList.empty()){
+		cout<<"is empty"<<endl;
+		return;
+	}
+	for(unsigned int i=0;i<broadcastList.size();i++){
+		cout<<"n"<<broadcastList[i]->id<<" ";
+	}
+	cout<<endl;
+}
+
+
+void simulator::updateDownloadedSegmentInfo(node *nodePtr){
+
+	for(unsigned int i=0;nodePtr->downloadedSegmentIDs.size();i++){
+		/*for()
+		if(nodePtr->downloadedSegmentIDs[i]==)*/
+	}
 }
