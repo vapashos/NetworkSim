@@ -100,6 +100,7 @@ void server::showSegmentList(){
 		cout<<endl;
 		segmentList[i].showLastPacket();
 	}
-
 }
+
+
 

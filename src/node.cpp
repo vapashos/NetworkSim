@@ -70,13 +70,18 @@ bool node::download3GPacket(){
 	//Add packet on in3GQueue and remove it then from channel3G
 	in3GQueue.push_back(ch3G->packetQueue.front());
 	ch3G->packetQueue.pop_front();
-
 	cout<<"After downloading packet ";
 	showQueue(in3GQueue);
 	//check if the packet downloaded is the last packet of the segment so the user can broadcast
 	if(in3GQueue.back().isLast){
-		cout<<"node "<<id<<" can start the BROADCAST "<<endl;
+		cout<<"node "<<id<<" can start the BROADCAST of segment "<<in3GQueue.back().segmentID<<endl;
+		//set the flag readyToBroadcast equal to true to insert the node in broadcast list queue.
 		readyToBroadcast=true;
+		//Update segmentQueue Map
+		in3GSegmentQueue[in3GQueue.back().segmentID]=in3GQueue;
+		//Create coded packets
+		//Clear the in3GQueue;
+		in3GQueue.clear();
 	}
 	return false;
 }
@@ -95,7 +100,6 @@ void node::showNeighborList(){
 	cout<<endl;
 }
 
-
 void node::showQueue(const deque<packet> &queue){
 	cout<<"node"<<id<<" queue:";
 	if(!queue.empty()){
@@ -106,8 +110,19 @@ void node::showQueue(const deque<packet> &queue){
 		return;
 	}
 	cout<<"-";
-
 }
 
+void node::showSegmentQueue(){
+	map<int, deque<packet> >::iterator it;
+	for(it=in3GSegmentQueue.begin();it!=in3GSegmentQueue.end();it++){
+		cout<<"segment"<<it->first;
+		showQueue(it->second);
+	}
+}
+
+
+void node::createCodedPackets(){
+
+}
 
 

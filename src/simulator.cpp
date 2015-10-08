@@ -52,6 +52,7 @@ void simulator::checkNodesBroadcast(){
 			//opote de mas peirazei na iparxoun parapanw apo 1 aithseis apo idio node
 				broadcastList.push_back(nodeList[i]);
 				cout<<"node "<<nodeList[i]->id<<" added in the broadcasting list";
+				nodeList[i]->readyToBroadcast=false;
 			//}
 		}
 	}
@@ -104,6 +105,7 @@ void simulator::setBroadcastNode(){
 		cout<<"after erasing "<<endl;
 		showBroadcastList();
 	}
-
-
 }
+
+
+

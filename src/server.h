@@ -24,6 +24,7 @@ public:
 	void allocatePacketsOnChannels();//this function allocate packets among channels - users in round robin
 	void showChannelQueues();
 	void showSegmentList();
+
 	virtual ~server();
 };
 
