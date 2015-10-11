@@ -1,7 +1,7 @@
 /*
  * ffNumber.h
  *
- *  Created on: 9 Ïêô 2015
+ *  Created on: 9 ï¿½ï¿½ï¿½ 2015
  *      Author: pasvas
  */
 
@@ -14,6 +14,7 @@ public:
 	int number;
 	finiteField *ff;
 	ffNumber();
+	ffNumber(int x);
 	ffNumber(int n,finiteField *x);
 	ffNumber(const ffNumber &x);
 	virtual ~ffNumber();

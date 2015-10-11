@@ -10,6 +10,9 @@
 #include <map>
 #include "channel.h"
 #include "segment.h"
+#include "ffNumber.h"
+#include "generalFunctions.h"
+
 class node {
 public:
 	static int counter;
@@ -18,6 +21,7 @@ public:
 	deque<node*> neighborList;
 	deque<packet> in3GQueue;//Queue with incoming packets of 3G
 	map<int,deque <packet> > in3GSegmentQueue;
+	map<int,deque <packet> > codedPacketsQueue;
 	deque<packet> outQueue;//Queue with coded packets to broadcast.
 	int id;
 	bool readyToBroadcast;//this variable is updated whenever the download of a segment is received.
@@ -32,7 +36,7 @@ public:
 	void showQueue(const deque<packet> &queue);//show any type of packet queue
 	void showSegmentQueue();
 	//void readyToBroadcast();//Each timeslot we run this check to know if one node is ready for broadcast after downloading all the packets of segment
-	void createCodedPackets();
+	void createCodedPackets(int segmentID);
 	//constructors-destructor
 	node();
 	virtual ~node();

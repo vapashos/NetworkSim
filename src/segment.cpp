@@ -46,6 +46,8 @@ void segment::addPacketOnSegment(packet *p){
 	lastPacket=p;//always point to the last received packet.
 	lastPacket->isLast=true;
 	size++;
+	//Update index inside packet information
+	p->indexInsideSegment=ffNumber(size);
 	//cout<<"segment"<<id<<" add packet"<<packetList.back()->id<<" new size="<<size<<endl;
 }
 

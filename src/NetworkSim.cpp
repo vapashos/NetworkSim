@@ -8,7 +8,7 @@
 
 
 #include "simulator.h"
-
+#include "testOperationsOnPackets.h"
 
 
 
@@ -55,6 +55,14 @@ int main() {
 		for(unsigned int i=0;i<mySim.nodeList.size();i++){
 			mySim.nodeList[i]->showSegmentQueue();
 		}
+
+		//Check operations on packets permanently
+
+
+		testOperationsOnPackets x;
+		x.createPoolOfPackets(3,3);
+		x.showPoolOfPackets();
+		x.multiplyPacket(x.packetsForTesting[0],ffNumber(5));
 
 
 	return 0;

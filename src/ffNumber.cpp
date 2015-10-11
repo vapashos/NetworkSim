@@ -1,7 +1,7 @@
 /*
  * ffNumber.cpp
  *
- *  Created on: 9 Ïêô 2015
+ *  Created on: 9 ï¿½ï¿½ï¿½ 2015
  *      Author: pasvas
  */
 
@@ -15,6 +15,10 @@ ffNumber::ffNumber(){
 	//cin>>c;
 }
 
+ffNumber::ffNumber(int x){
+	number=x;
+	ff=new finiteField(2,8);
+}
 
 
 ffNumber::ffNumber(int n,finiteField *x) {

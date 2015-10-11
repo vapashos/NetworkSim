@@ -9,6 +9,7 @@
 #include <ctime>
 #include <unistd.h>
 int getRandomNumber(int max,int min=0){
+	sleep(1);
 	srand(static_cast <unsigned> (time(NULL)));
 	return min + (rand() % (int)(max - min + 1));
 }

@@ -32,7 +32,18 @@ packet::packet(int sID,int rID,deque<unsigned char> &pLoad){
 	senderID=sID;
 	receiverID=rID;
 	payload=pLoad;
-	//cout<<"Empty packet with ID"<<id<<" created sender"<<senderID<<"receiver:"<<receiverID<<endl;
+	cout<<"Packet with ID"<<id<<" created sender"<<senderID<<"receiver:"<<receiverID<<endl;
+}
+
+packet::packet(int segID,ffNumber *indexSegment,deque<unsigned char> &pLoad){
+	//This constructor is used for packet after coding so the isLast info is not essential
+	counter++;
+	id=counter;
+	segmentID=segID;
+	indexInsideSegment=*indexSegment;
+	payload=pLoad;
+	isLast=false;
+	cout<<"constructor of coded packet created"<<endl;
 }
 
 packet::packet(const packet &p) {
@@ -61,3 +72,51 @@ void packet::showPayload(){
 void packet::setSegmentID(int sID){
 	segmentID=sID;
 }
+
+/*Overloaded Operators*/
+
+
+packet operator * (const packet &a,ffNumber &x){
+	deque<unsigned char > tempPayload;
+	//1.multiply payload
+	int z;
+	for(unsigned int i=0;i<a.payload.size();i++){
+		z=(int)a.payload[i];
+		ffNumber c=z*x;
+		tempPayload.push_back((unsigned char) c.number);
+	}
+
+	ffNumber tempIndexInsideSegment=a.indexInsideSegment*x;
+
+	return packet(a.segmentID,&tempIndexInsideSegment,tempPayload);
+}
+
+packet operator * (ffNumber &x,const packet &a){
+	return a*x;
+}
+
+/*packet operator * (const packet& a,int x){
+	return a*ffNumber(x);
+}
+
+packet operator * (int x,const packet &a){
+	return a*x;
+}*/
+
+
+packet operator + (const packet& a,const packet& b){
+
+		deque<unsigned char > tempPayload;
+		//1.multiply payload
+		int z,w;
+		for(unsigned int i=0;i<a.payload.size();i++){
+			z=(int)a.payload[i];
+			w=(int)b.payload[i];
+			ffNumber c=ffNumber(z)+ffNumber(w);
+			tempPayload.push_back((unsigned char) c.number);
+		}
+		//2.multiply sender and receiver ID
+		ffNumber tempIndexInsideSegment=a.indexInsideSegment+b.indexInsideSegment;
+		return packet(a.segmentID,&tempIndexInsideSegment,tempPayload);
+}
+
