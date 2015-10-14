@@ -54,16 +54,19 @@ int main() {
 
 		for(unsigned int i=0;i<mySim.nodeList.size();i++){
 			mySim.nodeList[i]->showSegmentQueue();
+			mySim.nodeList[i]->showCodedPackets();
 		}
 
 		//Check operations on packets permanently
 
-
+/*
+  Use testOperationOnPackets class to test operations over packets
 		testOperationsOnPackets x;
 		x.createPoolOfPackets(3,3);
 		x.showPoolOfPackets();
-		x.multiplyPacket(x.packetsForTesting[0],ffNumber(5));
+		//x.multiplyPacket(x.packetsForTesting[0],ffNumber(5));
+		x.addPackets(&x.packetsForTesting[0],&x.packetsForTesting[1]);
 
-
+*/
 	return 0;
 }

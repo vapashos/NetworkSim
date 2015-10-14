@@ -11,7 +11,7 @@ ffNumber::ffNumber(){
 	//char c;
 	//cout<<"call of default constuctor ffNumber";
 	number=0;
-	ff=NULL;
+	ff=new finiteField(2,8);
 	//cin>>c;
 }
 
@@ -53,11 +53,12 @@ ffNumber operator *(const ffNumber &a,const ffNumber &b){
 		cout<<"Error in finite numbers"<<a.number<<" and "<<b.number<<endl;
 		cin>>c;
 	}
-	//cout<<"inside operator overloading a.number="<<a.number<<" and b.number="<<b.number<<endl;
+
 	return(ffNumber(a.ff->mul[a.number][b.number],a.ff));
 }
 
 ffNumber operator +(const ffNumber &a,const ffNumber &b){
+	//cout<<"inside operator + overloading a.number="<<a.number<<" and b.number="<<b.number<<endl;
 	return(ffNumber(a.ff->sum[a.number][b.number],a.ff));
 }
 

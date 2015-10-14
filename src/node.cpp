@@ -82,7 +82,7 @@ bool node::download3GPacket(){
 		//Create coded packets
 
 		//Supress for the time being the execution of created coded packets
-		//createCodedPackets(in3GQueue.back().segmentID);
+		createCodedPackets(in3GQueue.back().segmentID);
 
 		//Clear the in3GQueue;
 		in3GQueue.clear();
@@ -133,27 +133,38 @@ void node::createCodedPackets(int segmentID){
 		return;
 	//select random coefficients
 	deque<ffNumber> coefficients;
-	cout<<"create codeded packets coefficients table:"<<endl;
+	cout<<"create coded packets coefficients table:"<<endl;
 	int randomCoeff;
-	for(int i=0;i<segmentSize;i++){
-		randomCoeff=getRandomNumber(255,0);
-		coefficients.push_back(ffNumber(randomCoeff));
-		cout<<coefficients.back().number<<" ";
-	}
-	cout<<endl;
 	//The number of coded packets that are going to be prepared
 	//are equal to the number of packets that belong to the segment
 	//also to create a coded packet we have to create linear combination
-
+	char c;
 	for(unsigned int i=0;i<in3GSegmentQueue[segmentID].size();i++){
 		packet Temp;
-		for(unsigned int j=0;j<coefficients.size();j++){
-			Temp=Temp+coefficients[j]*in3GSegmentQueue[segmentID][i];
+		int randomCoeff;
+		Temp.showPayload();
+		for(int j=0;j<segmentSize;j++){
+			randomCoeff=getRandomNumber(255,0);
+			coefficients.push_back(ffNumber(randomCoeff));
+			Temp=Temp+coefficients[j]*in3GSegmentQueue[segmentID][j];
 		}
+		//add random coefficients on coded packet just created
+		Temp.addCoefficients(coefficients);
+		//For debugging
+		//Temp.showRandCoefs();
+		coefficients.clear();
 		codedPacketsQueue[segmentID].push_back(Temp);
-		Temp.~packet();
 	}
+}
 
+void node::showCodedPackets(){
+	cout<<"node"<<id<<"show coded Packets "<<endl;
+	for(map<int, deque <packet> >::iterator it=codedPacketsQueue.begin();it!=codedPacketsQueue.end();it++){
+		for(unsigned int i=0;i<it->second.size();i++){
+			it->second[i].showRandCoefs();
+			it->second[i].showPayload();
+		}
+	}
 }
 
 

@@ -13,7 +13,9 @@ packet::packet() {
 	counter++;
 	id=counter;
 	senderID=receiverID=0;
-	cout<<"Empty packet with ID"<<id<<" created no sender or receiver defined"<<endl;
+	//cout<<"Empty packet with ID"<<id<<" created no sender or receiver defined"<<endl;
+	//empty payload mean payload with zeros
+	payload.push_back(0);
 	// TODO Auto-generated constructor stub
 
 }
@@ -23,7 +25,9 @@ packet::packet(int sID,int rID){
 	id=counter;
 	senderID=sID;
 	receiverID=rID;
-	cout<<"Empty packet with ID"<<id<<" created sender"<<senderID<<"receiver:"<<receiverID<<endl;
+	//empty payload mean payload with zeros
+	payload.push_back(0);
+//	cout<<"Empty packet with ID"<<id<<" created sender"<<senderID<<"receiver:"<<receiverID<<endl;
 }
 
 packet::packet(int sID,int rID,deque<unsigned char> &pLoad){
@@ -43,17 +47,21 @@ packet::packet(int segID,ffNumber *indexSegment,deque<unsigned char> &pLoad){
 	indexInsideSegment=*indexSegment;
 	payload=pLoad;
 	isLast=false;
-	cout<<"constructor of coded packet created"<<endl;
+//	cout<<"constructor of coded packet created"<<endl;
 }
 
 packet::packet(const packet &p) {
 	// TODO Auto-generated constructor stub
+	//cout<<"inside copy constructor for packet "<<endl;
 	id=p.id;
 	senderID=p.senderID;
 	receiverID=p.receiverID;
 	payload=p.payload;
 	segmentID=p.segmentID;
+	indexInsideSegment=p.indexInsideSegment;
 	isLast=p.isLast;
+	randCoefficients=p.randCoefficients;
+
 	//cout<<"copy constructor for packet with id "<<id<<endl;
 }
 
@@ -62,7 +70,13 @@ packet::~packet() {
 //	payload.clear();
 }
 
-void packet::showPayload(){
+void packet::showPayload() const{
+
+	if(payload.empty()){
+		cout<<"payload empty"<<endl;
+		return;
+	}
+
 	for(unsigned int i=0;i<payload.size();i++){
 		cout<<(int)payload[i]<<")"<<(bitset<8>)(payload[i])<<" ";
 	}
@@ -73,12 +87,30 @@ void packet::setSegmentID(int sID){
 	segmentID=sID;
 }
 
+void packet::addCoefficients(deque<ffNumber> coeff){
+	randCoefficients=coeff;
+}
+
+void packet::showRandCoefs(){
+	cout<<"packet"<<id<<" random coefficients"<<endl;
+
+	for(unsigned int i=0;i<randCoefficients.size();i++){
+		cout<<randCoefficients[i]<<" ";
+	}
+	cout<<endl;
+}
+
+
 /*Overloaded Operators*/
 
 
 packet operator * (const packet &a,ffNumber &x){
 	deque<unsigned char > tempPayload;
 	//1.multiply payload
+//	cout<<"multiply packet";
+//	a.showPayload();
+//	cout<<endl;
+//	cout<<"with "<<x.number<<endl;
 	int z;
 	for(unsigned int i=0;i<a.payload.size();i++){
 		z=(int)a.payload[i];
@@ -108,7 +140,17 @@ packet operator + (const packet& a,const packet& b){
 
 		deque<unsigned char > tempPayload;
 		//1.multiply payload
+//		cout<<"add packets"<<endl;
+//		cout<<"a";
+//		a.showPayload();
+//		cout<<endl;
+//		cout<<"add packets"<<endl;
+//		cout<<"b";
+//		b.showPayload();
+		cout<<endl;
+
 		int z,w;
+
 		for(unsigned int i=0;i<a.payload.size();i++){
 			z=(int)a.payload[i];
 			w=(int)b.payload[i];
@@ -117,6 +159,9 @@ packet operator + (const packet& a,const packet& b){
 		}
 		//2.multiply sender and receiver ID
 		ffNumber tempIndexInsideSegment=a.indexInsideSegment+b.indexInsideSegment;
+//		cout<<"zzzzzzzzzz"<<endl;
+//		char c;
+//		cin>>c;
 		return packet(a.segmentID,&tempIndexInsideSegment,tempPayload);
 }
 

@@ -37,6 +37,7 @@ public:
 	void showSegmentQueue();
 	//void readyToBroadcast();//Each timeslot we run this check to know if one node is ready for broadcast after downloading all the packets of segment
 	void createCodedPackets(int segmentID);
+	void showCodedPackets();
 	//constructors-destructor
 	node();
 	virtual ~node();

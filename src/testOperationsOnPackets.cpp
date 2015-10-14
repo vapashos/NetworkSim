@@ -23,7 +23,7 @@ void testOperationsOnPackets::createPoolOfPackets(int packetsNum,int payloadSize
 		for(int j=0;j<payloadSize;j++){
 			pLoad.push_back((unsigned char)getRandomNumber(255,0));
 		}
-		packetsForTesting.push_back(packet(0,0,pLoad));
+		packetsForTesting.push_back(packet(0,new ffNumber(i+1),pLoad));
 		pLoad.clear();
 	}
 }
@@ -48,4 +48,14 @@ void testOperationsOnPackets::multiplyPacket(packet p,ffNumber x){
 }
 
 
+void testOperationsOnPackets::addPackets(packet *p1,packet *p2){
+	cout<<"before packet Addition"<<endl;
+	cout<<"p1 payload:"<<endl;
+	p1->showPayload();
+	cout<<"p2 payload"<<endl;
+	p2->showPayload();
+	cout<<"after packets addition"<<endl;
+	packet temp=*p1+*p2;
+	temp.showPayload();
+}
 
