@@ -29,8 +29,9 @@ channel::~channel() {
 }
 
 void channel::addPacket(const packet &p){
-	cout<<"packet with id "<<p.id<<" is going to be transmitted "<<endl;
+	cout<<"packet with id "<<p.id<<" is going to be transmitted "<<"sender"<<p.senderID<<"receiver"<<p.receiverID<< endl;
 	packetQueue.push_back(p);
+	cout<<"packet added successfully on wlan "<<endl;
 }
 
 void channel::showChannel(){
@@ -38,7 +39,7 @@ void channel::showChannel(){
 			cout<<"packet Queue is empty"<<endl;
 			return;
 		}
-		cout<<"*** ch"<<id<<" ***"<<endl;
+		cout<<"*** ch"<<id-1<<" ***"<<endl;
 		for(unsigned int i=0;i<packetQueue.size();i++){
 			cout<<"========";
 		}

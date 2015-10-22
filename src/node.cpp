@@ -7,13 +7,16 @@
 
 #include "node.h"
 int node::counter=0;
-channel *node::wlan;
+
+channel* node::wlan=new channel();
+
 node::node() {
 	// TODO Auto-generated constructor stub
 	counter++;
 	id=counter;
 	ch3G=NULL;
 	cout<<"Node "<<id<<" created"<<endl;
+	segmentIDInitialPush=0;
 }
 
 node::~node() {
@@ -21,30 +24,58 @@ node::~node() {
 }
 
 void node::initChannelWlan(float lossProb){
-	node::wlan=new channel(lossProb);
+	wlan=new channel(lossProb);
 }
 
 void node::showChannelWlan(){
-	if(node::wlan->packetQueue.empty()){
+	if(wlan->packetQueue.empty()){
 		cout<<"wlan queue is empty"<<endl;
 		return;
 	}
 	cout<<"----------------------------------------------"<<endl;
 	cout<<"|                 wlan                     -"<<endl;
 	cout<<"----------------------------------------------"<<endl;
-	for(unsigned int i=0;i<node::wlan->packetQueue.size();i++){
-		cout<<"   p"<<node::wlan->packetQueue[i].id<<"    ";
+	cout<<"|";
+	for(unsigned int i=0;i<wlan->packetQueue.size();i++){
+		cout<<"   p"<<wlan->packetQueue[i].id<<"   ";
 	}
-	cout<<endl;
-	for(unsigned int i=0;i<node::wlan->packetQueue.size();i++){
-		cout<<"(s"<<node::wlan->packetQueue[i].senderID<<"-r"<<node::wlan->packetQueue[i].receiverID<<") ";
+	cout<<"|"<<endl<<"|";
+
+	for(unsigned int i=0;i<wlan->packetQueue.size();i++){
+		cout<<" seg"<<wlan->packetQueue[i].segmentID<<"   ";
 	}
+	cout<<"|"<<endl<<"|";
+	for(unsigned int i=0;i<wlan->packetQueue.size();i++){
+		cout<<" (s"<<wlan->packetQueue[i].senderID<<"-r"<<wlan->packetQueue[i].receiverID<<") ";
+	}
+	cout<<"|"<<endl;
 }
 
 void node::broadcastPacket(){
-	for(unsigned int i=0;i<5;i++){
-		node::wlan->packetQueue.push_back(packet(1,i+1));
+	//Scans coded packet queue removes the packets from that queue and
+	//inserts them inside packetQueue of wlan adding the receiver.
+
+	if(segmentIDInitialPush==0){
+		cout<<"segmentID for initial push is not set"<<endl;
+		return;
 	}
+	cout<<"start adding coded packets on wlan"<<endl;
+	for(unsigned int j=0;j<codedPacketsQueue[segmentIDInitialPush].size();j++){
+		packet Temp=codedPacketsQueue[segmentIDInitialPush][j];
+		for(unsigned int i=0;i<neighborList.size();i++){
+			Temp.receiverID=neighborList[i]->id;
+			Temp.senderID=id;
+			//check Probability loss before putting it on wlan channel queue
+			if(node::wlan->lossProb<getRandomNumber((float)1,(float)0))
+				node::wlan->addPacket(Temp);
+		}
+	}
+	codedPacketsQueue[segmentIDInitialPush].clear();
+	cout<<"node"<<id<<" after broadcasting "<<segmentIDInitialPush<<endl;
+	cout<<"wlan queue"<<endl;
+	//wlan->showChannel();
+	cout<<"node coded packets queue"<<endl;
+	showCodedPackets();
 }
 
 void node::addNeighbor(node *n){
@@ -80,12 +111,13 @@ bool node::download3GPacket(){
 		//Update segmentQueue Map
 		in3GSegmentQueue[in3GQueue.back().segmentID]=in3GQueue;
 		//Create coded packets
-
 		//Supress for the time being the execution of created coded packets
 		createCodedPackets(in3GQueue.back().segmentID);
-
+		segmentIDInitialPush=in3GQueue.back().segmentID;
 		//Clear the in3GQueue;
 		in3GQueue.clear();
+		//Make the initialpush
+
 	}
 	return false;
 }
@@ -126,7 +158,6 @@ void node::showSegmentQueue(){
 
 
 void node::createCodedPackets(int segmentID){
-
 	//first find the size of segment
 	int segmentSize =in3GSegmentQueue[segmentID].size();
 	if(segmentSize==0)
@@ -134,15 +165,12 @@ void node::createCodedPackets(int segmentID){
 	//select random coefficients
 	deque<ffNumber> coefficients;
 	cout<<"create coded packets coefficients table:"<<endl;
-	int randomCoeff;
 	//The number of coded packets that are going to be prepared
 	//are equal to the number of packets that belong to the segment
 	//also to create a coded packet we have to create linear combination
-	char c;
 	for(unsigned int i=0;i<in3GSegmentQueue[segmentID].size();i++){
 		packet Temp;
 		int randomCoeff;
-		Temp.showPayload();
 		for(int j=0;j<segmentSize;j++){
 			randomCoeff=getRandomNumber(255,0);
 			coefficients.push_back(ffNumber(randomCoeff));
@@ -166,5 +194,6 @@ void node::showCodedPackets(){
 		}
 	}
 }
+
 
 

@@ -47,7 +47,7 @@ packet::packet(int segID,ffNumber *indexSegment,deque<unsigned char> &pLoad){
 	indexInsideSegment=*indexSegment;
 	payload=pLoad;
 	isLast=false;
-//	cout<<"constructor of coded packet created"<<endl;
+	cout<<"constructor of coded packet created segmentID="<<segID<<endl;
 }
 
 packet::packet(const packet &p) {
@@ -62,7 +62,7 @@ packet::packet(const packet &p) {
 	isLast=p.isLast;
 	randCoefficients=p.randCoefficients;
 
-	//cout<<"copy constructor for packet with id "<<id<<endl;
+	cout<<"copy constructor for packet with id "<<id<<"and segmentID="<<p.segmentID<<endl;
 }
 
 packet::~packet() {
@@ -105,6 +105,7 @@ void packet::showRandCoefs(){
 
 
 packet operator * (const packet &a,ffNumber &x){
+	cout<<"inside operator * segmentID="<<a.segmentID<<endl;
 	deque<unsigned char > tempPayload;
 	//1.multiply payload
 //	cout<<"multiply packet";
@@ -162,6 +163,7 @@ packet operator + (const packet& a,const packet& b){
 //		cout<<"zzzzzzzzzz"<<endl;
 //		char c;
 //		cin>>c;
-		return packet(a.segmentID,&tempIndexInsideSegment,tempPayload);
+		int codedPacketSegmentID= (b.segmentID>a.segmentID ? b.segmentID:a.segmentID);
+		return packet(codedPacketSegmentID,&tempIndexInsideSegment,tempPayload);
 }
 

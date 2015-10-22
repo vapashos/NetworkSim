@@ -43,10 +43,13 @@ void server::createPacketList(){
 			counter=0;
 //			if(!segmentList.empty())
 //				segmentList.back().showSegmentPackets();
+			//Add empty segment on segmentList
 			segmentList.push_back(segment());
 		}
 		packetsToDownload[i].segmentID=segmentList.back().id;
+		//Add packets on the empty segment.
 		segmentList.back().addPacketOnSegment(&packetsToDownload[i]);
+
 	}
 }
 

@@ -33,7 +33,11 @@ int main() {
 	mySim.allocatePacketsOnChannels();
 	mySim.showChannelQueues();
 
+	//initialize wlan channel so can be used aftewards
+	node::initChannelWlan(0.2);
+
 	bool flag=false;//flag to check if there is nothing else to be downloaded from 3G for any node
+	bool broadcastFlag=false;//If one user broadcasts sets flag to true so the showChannelWlan is invoked
 		for(int i=0;!flag && i<100 ;i++){//100 timeslots
 			cout<<"---------- this tis timeslot "<<i<<" ---------------------"<<endl;
 			flag=true;
@@ -47,26 +51,37 @@ int main() {
 					}
 				}
 				mySim.nodeList[j]->ch3G->showChannel();
+				if(mySim.broadcastNode!=NULL){
+					//Initial Push
+					cout<<"Perform INITIAL PUSH broadcast on ALL node List"<<endl;
+					mySim.broadcastNode->broadcastPacket();
+					broadcastFlag=true;
+				}
 				//after each node downloads each packet it checks if it has downloaded a segment so it can start the broadcast
+				if(broadcastFlag){
+					node::showChannelWlan();
+					broadcastFlag=false;
+				}
 			}
 		}
 
 
-		for(unsigned int i=0;i<mySim.nodeList.size();i++){
-			mySim.nodeList[i]->showSegmentQueue();
-			mySim.nodeList[i]->showCodedPackets();
-		}
-
+	//	for(unsigned int i=0;i<mySim.nodeList.size();i++){
+	//		mySim.nodeList[i]->showSegmentQueue();
+	//		mySim.nodeList[i]->showCodedPackets();
+    //	}
+	 //
 		//Check operations on packets permanently
 
 /*
-  Use testOperationOnPackets class to test operations over packets
-		testOperationsOnPackets x;
-		x.createPoolOfPackets(3,3);
-		x.showPoolOfPackets();
+//  Use testOperationOnPackets class to test operations over packets
+//		testOperationsOnPackets x;
+//		x.createPoolOfPackets(3,3);
+//		x.showPoolOfPackets();
 		//x.multiplyPacket(x.packetsForTesting[0],ffNumber(5));
-		x.addPackets(&x.packetsForTesting[0],&x.packetsForTesting[1]);
-
+	//	x.addPackets(&x.packetsForTesting[0],&x.packetsForTesting[1]);
+	//	mySim.wlan->packetQueue(&x.packetsForTesting[0]);
 */
+
 	return 0;
 }

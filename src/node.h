@@ -16,14 +16,15 @@
 class node {
 public:
 	static int counter;
-	static channel *wlan;/*This channel is shared between nodes to transmit packets over it*/
+
 	channel *ch3G;/*channel to download data from the server*/
 	deque<node*> neighborList;
+	static channel *wlan;/*This channel is shared between nodes to transmit packets over it*/
 	deque<packet> in3GQueue;//Queue with incoming packets of 3G
 	map<int,deque <packet> > in3GSegmentQueue;
 	map<int,deque <packet> > codedPacketsQueue;
 	deque<packet> outQueue;//Queue with coded packets to broadcast.
-	int id;
+	int id,segmentIDInitialPush;//segmentIDInitialPush is the segment that has been received and node has to do thei initial push
 	bool readyToBroadcast;//this variable is updated whenever the download of a segment is received.
 	//functions
 	static void initChannelWlan(float lossProb);

@@ -80,13 +80,16 @@ void simulator::showBroadcastList(){
 
 void simulator::setBroadcastNode(){
 
+	cout<<"INSIDE BROADCAST NODE"<<endl;
 	if(broadcastNode!=NULL){
 		cout<<"there exists broadcast node"<<endl;
 		return;
 	}
 
-	if (broadcastList.empty())
+	if (broadcastList.empty()){
+		cout<<"broadcast list is empty"<<endl;
 		return;
+	}
 	else if(broadcastList.size()==1){
 			broadcastNode=broadcastList.front();
 			broadcastList.pop_front();
@@ -95,7 +98,7 @@ void simulator::setBroadcastNode(){
 	}
 	else {
 		cout<<"there are more than one candidates for broadcasting ";
-		int x=getRandomNumber(0,broadcastList.size()-1);
+		int x=getRandomNumber(broadcastList.size()-1,0);
 		cout<<" select randomly "<<x<<endl;
 		broadcastNode=broadcastList[x];
 		cout<<"before removing node"<<endl;
@@ -106,6 +109,8 @@ void simulator::setBroadcastNode(){
 		showBroadcastList();
 	}
 }
+
+
 
 
 

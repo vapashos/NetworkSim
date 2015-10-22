@@ -17,9 +17,11 @@ public:
 	deque<node*> nodeList;
 	deque<node*> broadcastList;//list of nodes ready to broadcast
 	node* broadcastNode;
+
 	int numOfNodes;
 	server *s;
 	simulator(int nodesNum,server *srv);
+
 	void createMeshTopology();
 	void allocatePacketsOnChannels();
 	void showChannelQueues();

@@ -48,6 +48,8 @@ void segment::addPacketOnSegment(packet *p){
 	size++;
 	//Update index inside packet information
 	p->indexInsideSegment=ffNumber(size);
+	//Update segmentID information of packet with the segment that it is added
+	p->setSegmentID(this->id);
 	//cout<<"segment"<<id<<" add packet"<<packetList.back()->id<<" new size="<<size<<endl;
 }
 
