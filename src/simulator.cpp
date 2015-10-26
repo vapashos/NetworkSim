@@ -82,7 +82,7 @@ void simulator::setBroadcastNode(){
 
 	cout<<"INSIDE BROADCAST NODE"<<endl;
 	if(broadcastNode!=NULL){
-		cout<<"there exists broadcast node"<<endl;
+		cout<<"broadcastNode:"<<broadcastNode->id<<"there exists broadcast node"<<endl;
 		return;
 	}
 

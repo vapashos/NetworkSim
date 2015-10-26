@@ -43,6 +43,8 @@ int main() {
 			flag=true;
 			mySim.setBroadcastNode();
 			for(unsigned int j=0;j<mySim.nodeList.size();j++){
+				cout<<"-------------- node "<<mySim.nodeList[j]->id<<"   -------------------"<<endl;
+				mySim.nodeList[j]->ch3G->showChannel();
 				if(!mySim.nodeList[j]->ch3G->packetQueue.empty()){
 					flag=false;
 					if( getRandomNumber((float)1.0,0.0)>=mySim.nodeList[j]->ch3G->lossProb){
@@ -50,18 +52,17 @@ int main() {
 						mySim.checkNodesBroadcast();
 					}
 				}
-				mySim.nodeList[j]->ch3G->showChannel();
-				if(mySim.broadcastNode!=NULL){
+				if(mySim.broadcastNode!=NULL ){
+					if(mySim.broadcastNode==mySim.nodeList[j]){
 					//Initial Push
-					cout<<"Perform INITIAL PUSH broadcast on ALL node List"<<endl;
+					cout<<"bdcast"<<mySim.broadcastNode->id<<" Perform INITIAL PUSH broadcast on ALL node List"<<endl;
 					mySim.broadcastNode->broadcastPacket();
 					broadcastFlag=true;
-					//Run function to download packets from wlan for all nodes exept broadcast node
-					if(mySim.broadcastNode!=mySim.nodeList[i]){
-						mySim.nodeList[i]->downloadWlanPacket();
 					}
+				//Run function to download packets from wlan for all nodes exept broadcast node
+					else
+						mySim.nodeList[j]->downloadWlanPacket();
 				}
-
 				//after each node downloads each packet it checks if it has downloaded a segment so it can start the broadcast
 				if(broadcastFlag){
 					node::showChannelWlan();

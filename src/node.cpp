@@ -74,7 +74,7 @@ void node::broadcastPacket(){
 	codedPacketsQueue[segmentIDInitialPush].clear();
 	cout<<"node"<<id<<" after broadcasting "<<segmentIDInitialPush<<" i shall release the flag"<<endl;
 	cout<<"wlan queue"<<endl;
-	//wlan->showChannel();
+	showChannelWlan();
 	cout<<"node coded packets queue"<<endl;
 	showCodedPackets();
 }
@@ -83,27 +83,33 @@ void node::broadcastPacket(){
 void node::downloadWlanPacket(){
 
 	//Broadcast node should not enter this function
-
+	cout<<"#### Node"<<this->id<<" Donwload Wlan Packet ######"<<endl;
+	if(node::wlan->packetQueue.size()==0){
+		return;
+	}
 	deque <packet> ::iterator iter=node::wlan->packetQueue.end();
-	cout<<"node "<<id<<" check to download WLAN packet"<<endl;
+	cout<<"node "<<this->id<<" check to download WLAN packet"<<endl;
 	for(unsigned int i=0;i<node::wlan->packetQueue.size();i++){
-		if(node::wlan->packetQueue[i].receiverID==id){
-			cout<<"packet "<<node::wlan->packetQueue[i].id;
+		if(node::wlan->packetQueue[i].receiverID==this->id){
+			cout<<"packet "<<node::wlan->packetQueue[i].id<<" ";
 			node::wlan->packetQueue[i].showPayload();
-			cout<<" was destined for me"<<endl;
+			cout<<"with receiver id"<<node::wlan->packetQueue[i].receiverID<<"  was destined for me"<<endl;
 			inComingCodedPackets[node::wlan->packetQueue[i].segmentID].push_back(node::wlan->packetQueue[i]);
 			//Have to remove it from wlan channel queue
-			iter=node::wlan->packetQueue.begin()+1;
+			iter=node::wlan->packetQueue.begin()+i;
+			cout<<"before exiting iterator receiverid"<<iter->receiverID<<" and packetID"<<iter->id<<endl;
 			break;
 		}
 	}
 
 	if(iter!=node::wlan->packetQueue.end()){
 		//erase
-		cout<<"node "<<id<<" download packet function found element for me "<<iter->id<<" receiverid "<<iter->receiverID<<" remove it"<<endl;
+		cout<<"node "<<this->id<<" download packet function found element for me "<<iter->id<<" receiverid "<<iter->receiverID<<" remove it"<<endl;
 		cout<<"size of queue before erasing"<<node::wlan->packetQueue.size()<<endl;
+		showChannelWlan();
 		node::wlan->packetQueue.erase(iter);
 		cout<<"size of queue after erasing"<<node::wlan->packetQueue.size()<<endl;
+		showChannelWlan();
 	}
 
 }
