@@ -23,6 +23,7 @@ public:
 	deque<packet> in3GQueue;//Queue with incoming packets of 3G
 	map<int,deque <packet> > in3GSegmentQueue;
 	map<int,deque <packet> > codedPacketsQueue;
+	map<int ,deque <packet> > inComingCodedPackets;//Map for incoming coded packets per segment
 	deque<packet> outQueue;//Queue with coded packets to broadcast.
 	int id,segmentIDInitialPush;//segmentIDInitialPush is the segment that has been received and node has to do thei initial push
 	bool readyToBroadcast;//this variable is updated whenever the download of a segment is received.
@@ -30,6 +31,7 @@ public:
 	static void initChannelWlan(float lossProb);
 	static void showChannelWlan();
 	void broadcastPacket();
+	void downloadWlanPacket();
 	void addNeighbor(node *n);//Keep information of adjacent nodes
 	void connectOn3GChannel(channel* c);//connect user on 3G channel (sets pointer x)
 	bool download3GPacket();//if there is nothing else to download return true
@@ -39,6 +41,7 @@ public:
 	//void readyToBroadcast();//Each timeslot we run this check to know if one node is ready for broadcast after downloading all the packets of segment
 	void createCodedPackets(int segmentID);
 	void showCodedPackets();
+	void showInCodedPackets();
 	//constructors-destructor
 	node();
 	virtual ~node();

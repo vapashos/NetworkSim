@@ -70,12 +70,42 @@ void node::broadcastPacket(){
 				node::wlan->addPacket(Temp);
 		}
 	}
+	//Clear node's list of coded packets
 	codedPacketsQueue[segmentIDInitialPush].clear();
-	cout<<"node"<<id<<" after broadcasting "<<segmentIDInitialPush<<endl;
+	cout<<"node"<<id<<" after broadcasting "<<segmentIDInitialPush<<" i shall release the flag"<<endl;
 	cout<<"wlan queue"<<endl;
 	//wlan->showChannel();
 	cout<<"node coded packets queue"<<endl;
 	showCodedPackets();
+}
+
+
+void node::downloadWlanPacket(){
+
+	//Broadcast node should not enter this function
+
+	deque <packet> ::iterator iter=node::wlan->packetQueue.end();
+	cout<<"node "<<id<<" check to download WLAN packet"<<endl;
+	for(unsigned int i=0;i<node::wlan->packetQueue.size();i++){
+		if(node::wlan->packetQueue[i].receiverID==id){
+			cout<<"packet "<<node::wlan->packetQueue[i].id;
+			node::wlan->packetQueue[i].showPayload();
+			cout<<" was destined for me"<<endl;
+			inComingCodedPackets[node::wlan->packetQueue[i].segmentID].push_back(node::wlan->packetQueue[i]);
+			//Have to remove it from wlan channel queue
+			iter=node::wlan->packetQueue.begin()+1;
+			break;
+		}
+	}
+
+	if(iter!=node::wlan->packetQueue.end()){
+		//erase
+		cout<<"node "<<id<<" download packet function found element for me "<<iter->id<<" receiverid "<<iter->receiverID<<" remove it"<<endl;
+		cout<<"size of queue before erasing"<<node::wlan->packetQueue.size()<<endl;
+		node::wlan->packetQueue.erase(iter);
+		cout<<"size of queue after erasing"<<node::wlan->packetQueue.size()<<endl;
+	}
+
 }
 
 void node::addNeighbor(node *n){
@@ -117,7 +147,6 @@ bool node::download3GPacket(){
 		//Clear the in3GQueue;
 		in3GQueue.clear();
 		//Make the initialpush
-
 	}
 	return false;
 }
@@ -196,4 +225,13 @@ void node::showCodedPackets(){
 }
 
 
-
+void node::showInCodedPackets(){
+	cout<<"node"<<id<<"show incoming coded Packets "<<endl;
+	for(map<int, deque <packet> >::iterator it=inComingCodedPackets.begin();it!=inComingCodedPackets.end();it++){
+		cout<<"segID"<<it->first;
+		for(unsigned int i=0;i<it->second.size();i++){
+			cout<<it->second[i].id<<" ";
+		}
+		cout<<endl;
+	}
+}

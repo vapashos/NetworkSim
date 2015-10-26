@@ -56,7 +56,12 @@ int main() {
 					cout<<"Perform INITIAL PUSH broadcast on ALL node List"<<endl;
 					mySim.broadcastNode->broadcastPacket();
 					broadcastFlag=true;
+					//Run function to download packets from wlan for all nodes exept broadcast node
+					if(mySim.broadcastNode!=mySim.nodeList[i]){
+						mySim.nodeList[i]->downloadWlanPacket();
+					}
 				}
+
 				//after each node downloads each packet it checks if it has downloaded a segment so it can start the broadcast
 				if(broadcastFlag){
 					node::showChannelWlan();
